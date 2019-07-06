@@ -3,38 +3,37 @@ const crypto = require("crypto");
 
 const _EC_NAME = "secp384r1";
 
-/**
- * @constructor
- */
-function ECDH() {
-    this._ecdhObj = crypto.createECDH(_EC_NAME);
+let _ecdhObjArr = [];
 
-    // Instantly generating keys
-    this._ecdhObj.generateKeys();
+/**
+ * @returns {{index: Number, publicKey: Buffer}}
+ */
+function start() {
+    let ecdhObj = crypto.createECDH(_EC_NAME);
+
+    let index = _ecdhObjArr.push(ecdhObj);
+    return {index, publicKey: ecdhObj.generateKeys()};
 }
 
 /**
- * @returns {Buffer}
- */
-ECDH.prototype.getPublicKey = function () {
-    return this._ecdhObj.getPublicKey();
-};
-
-/**
+ * @param {Number} index
  * @param {Buffer} publicKey
+ * @param {Number} len
  * @returns {Boolean | Buffer}
  */
-ECDH.prototype.computeSecretKey = function (publicKey) {
+function finish(index, publicKey, len) {
+    let secretKey;
+
     try {
-        // noinspection ES6ConvertVarToLetConst
-        var secretKey = this._ecdhObj
+        secretKey = _ecdhObjArr[index]
             .computeSecret(publicKey)
-            .slice(0, 24);
+            .slice(0, len);
     } catch (e) {
         return false;
     }
 
+    _ecdhObjArr.splice(index, 1);
     return secretKey;
-};
+}
 
-module.exports = ECDH;
+module.exports = {start, finish};

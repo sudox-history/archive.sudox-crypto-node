@@ -10,13 +10,9 @@ const _HASH_ALG = "sha3-384";
  * @returns {Boolean | module:crypto.KeyObject}
  */
 function parseKey(path, type) {
-    if (!fs.existsSync(path)) {
-        return false;
-    }
-
-    let key = fs.readFileSync(path);
-
     try {
+        let key = fs.readFileSync(path);
+
         if (type === "public") {
             return crypto.createPublicKey(key);
         }
@@ -38,8 +34,8 @@ function parseKey(path, type) {
  */
 function compute(plaintext, privateKey) {
     let signObj = crypto.createSign(_HASH_ALG);
-    signObj.update(plaintext);
 
+    signObj.update(plaintext);
     return signObj.sign(privateKey);
 }
 
@@ -51,8 +47,8 @@ function compute(plaintext, privateKey) {
  */
 function verify(plaintext, publicKey, sign) {
     let verifyObj = crypto.createVerify(_HASH_ALG);
-    verifyObj.update(plaintext);
 
+    verifyObj.update(plaintext);
     return verifyObj.verify(publicKey, sign)
 }
 

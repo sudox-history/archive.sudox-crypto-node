@@ -10,8 +10,8 @@ const _HASH_ALG = "sha3-384";
  */
 function compute(plaintext, key) {
     let hmacObj = crypto.createHmac(_HASH_ALG, key);
-    hmacObj.update(plaintext);
 
+    hmacObj.update(plaintext);
     return hmacObj.digest();
 }
 
@@ -22,9 +22,10 @@ function compute(plaintext, key) {
  * @returns {Boolean}
  */
 function verify(plaintext, key, hmac) {
+    let res;
+
     try {
-        // noinspection ES6ConvertVarToLetConst
-        var res = crypto.timingSafeEqual(compute(plaintext, key), hmac);
+        res = crypto.timingSafeEqual(compute(plaintext, key), hmac);
     } catch (e) {
         return false;
     }
