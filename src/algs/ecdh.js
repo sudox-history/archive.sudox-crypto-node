@@ -1,7 +1,8 @@
 "use strict";
 const crypto = require("crypto");
+const consts = require("../consts");
 
-const _EC_NAME = "secp384r1";
+const _AES_KEY_LEN = parseInt(consts.AES_ALG.match(/\d+/)[0]) / 8;
 
 let _ecdhObjArr = [];
 
@@ -9,7 +10,7 @@ let _ecdhObjArr = [];
  * @returns {{index: Number, publicKey: Buffer}}
  */
 function start() {
-    let ecdhObj = crypto.createECDH(_EC_NAME);
+    let ecdhObj = crypto.createECDH(consts.ECDH_CURVE_NAME);
 
     let index = _ecdhObjArr.push(ecdhObj);
     return {index, publicKey: ecdhObj.generateKeys()};
@@ -18,16 +19,15 @@ function start() {
 /**
  * @param {Number} index
  * @param {Buffer} publicKey
- * @param {Number} len
  * @returns {Boolean | Buffer}
  */
-function finish(index, publicKey, len) {
+function finish(index, publicKey) {
     let secretKey;
 
     try {
         secretKey = _ecdhObjArr[index]
             .computeSecret(publicKey)
-            .slice(0, len);
+            .slice(0, _AES_KEY_LEN);
     } catch (e) {
         return false;
     }

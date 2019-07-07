@@ -1,7 +1,6 @@
 "use strict";
 const crypto = require("crypto");
-
-const _AES_ALG = "aes-192-ctr";
+const consts = require("../consts");
 
 /**
  * @param {Buffer} plaintext
@@ -13,7 +12,7 @@ function encrypt(plaintext, key, iv) {
     let cipherObj;
 
     try {
-        cipherObj = crypto.createCipheriv(_AES_ALG, key, iv);
+        cipherObj = crypto.createCipheriv(consts.AES_ALG, key, iv);
     } catch (e) {
         return false;
     }
@@ -34,7 +33,7 @@ function decrypt(ciphertext, key, iv) {
     let decipherObj;
 
     try {
-        decipherObj = crypto.createDecipheriv(_AES_ALG, key, iv);
+        decipherObj = crypto.createDecipheriv(consts.AES_ALG, key, iv);
     } catch (e) {
         return false;
     }

@@ -1,7 +1,6 @@
 "use strict";
 const crypto = require("crypto");
-
-const _HASH_ALG = "sha3-384";
+const consts = require("../consts");
 
 /**
  * @param {Buffer} plaintext
@@ -9,7 +8,7 @@ const _HASH_ALG = "sha3-384";
  * @returns {Buffer}
  */
 function compute(plaintext, key) {
-    let hmacObj = crypto.createHmac(_HASH_ALG, key);
+    let hmacObj = crypto.createHmac(consts.HMAC_HASH_ALG, key);
 
     hmacObj.update(plaintext);
     return hmacObj.digest();

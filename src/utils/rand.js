@@ -1,8 +1,8 @@
 "use strict";
 const crypto = require("crypto");
+const consts = require("../consts");
 
-const _RAND_NUM_BYTES_COUNT = 3;
-const _RAND_MAX_NUM = 256 ** _RAND_NUM_BYTES_COUNT;
+const _RAND_DIVIDER = 256 ** consts.RAND_LVL;
 
 /**
  * @param {Number} min
@@ -11,10 +11,10 @@ const _RAND_MAX_NUM = 256 ** _RAND_NUM_BYTES_COUNT;
  */
 function genNum(min, max) {
     let num = crypto
-        .randomBytes(_RAND_NUM_BYTES_COUNT)
-        .readUIntLE(0, _RAND_NUM_BYTES_COUNT);
+        .randomBytes(consts.RAND_LVL)
+        .readUIntLE(0, consts.RAND_LVL);
 
-    return Math.floor(num / _RAND_MAX_NUM * (max - min) + min)
+    return Math.floor(num / _RAND_DIVIDER * (max - min) + min)
 }
 
 /**

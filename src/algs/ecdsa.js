@@ -1,8 +1,7 @@
 "use strict";
 const crypto = require("crypto");
 const fs = require("fs");
-
-const _HASH_ALG = "sha3-384";
+const consts = require("../consts");
 
 /**
  * @param {String} path
@@ -33,7 +32,7 @@ function parseKey(path, type) {
  * @returns {Buffer}
  */
 function compute(plaintext, privateKey) {
-    let signObj = crypto.createSign(_HASH_ALG);
+    let signObj = crypto.createSign(consts.ECDSA_HASH_ALG);
 
     signObj.update(plaintext);
     return signObj.sign(privateKey);
@@ -46,7 +45,7 @@ function compute(plaintext, privateKey) {
  * @returns {Boolean}
  */
 function verify(plaintext, publicKey, sign) {
-    let verifyObj = crypto.createVerify(_HASH_ALG);
+    let verifyObj = crypto.createVerify(consts.ECDSA_HASH_ALG);
 
     verifyObj.update(plaintext);
     return verifyObj.verify(publicKey, sign)

@@ -1,16 +1,14 @@
 "use strict";
 const crypto = require("crypto");
 const rand = require("./rand");
-
-const _SALT_MIN_LEN = 16;
-const _SALT_MAX_LEN = 32;
+const consts = require("../consts");
 
 /**
  * @param {Buffer} plaintext
  * @returns {Buffer}
  */
 function add(plaintext) {
-    let saltLen = rand.genNum(_SALT_MIN_LEN, _SALT_MAX_LEN);
+    let saltLen = rand.genNum(consts.SALT_MIN_LEN, consts.SALT_MAX_LEN);
 
     let salt = crypto.randomBytes(saltLen + 1);
     salt[saltLen] = saltLen;
