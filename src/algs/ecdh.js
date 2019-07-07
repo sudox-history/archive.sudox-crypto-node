@@ -12,7 +12,7 @@ let _ecdhObjArr = [];
 function start() {
     let ecdhObj = crypto.createECDH(consts.ECDH_CURVE_NAME);
 
-    let index = _ecdhObjArr.push(ecdhObj);
+    let index = _ecdhObjArr.push(ecdhObj) - 1;
     return {index, publicKey: ecdhObj.generateKeys()};
 }
 
